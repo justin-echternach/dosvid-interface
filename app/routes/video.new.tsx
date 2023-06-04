@@ -94,8 +94,12 @@ export const action = async ({ request }: ActionArgs) => {
             answers
         });
         //return redirect('/success'); // Redirect to a success page, or wherever you want
-    } catch (error) {
-        console.error(`Error uploading file: ${error.message}`);
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            console.error(`Error uploading file: ${error.message}`);
+        } else {
+            console.error(`Unknown error: ${error}`);
+        }
         return redirect('/error'); // Redirect to an error page
     }
 
@@ -117,7 +121,7 @@ export default function NewVideoPage() {
         }}>
             <Form
                 method="post"
-                enctype="multipart/form-data"
+                encType="multipart/form-data"
                 style={{
                     display: "flex",
                     flexDirection: "column",
